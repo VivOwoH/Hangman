@@ -60,9 +60,9 @@ class Game(db.Model):
         score = B + U + L - E
 
         :B (Base score) = 100
-        :U (Unique character in the word) = 2/char
-        :L (Length of word) = 1/char
-        :E (Wrong characters attempted) = -10/char
+        :U (Unique character in the word) = 2 per character
+        :L (Length of word) = 1 per character
+        :E (Wrong characters attempted) = -10 points per incorrect character
         '''
         return 100 + 2*len(set(self.word)) + len(self.word) - 10*len(self.errors)
 
@@ -100,13 +100,14 @@ class Game(db.Model):
 # Controller
 
 @app.route('/')
-def home():
+def home(): # home screen
     games = sorted(
         [game for game in Game.query.all() if game.won],
         key=lambda game: -game.points)[:10]
     return flask.render_template('home.html', games=games)
 
 @app.route('/play')
+# play button on home screen
 def new_game():
     player = flask.request.args.get('player')
     game = Game(player)
@@ -115,6 +116,7 @@ def new_game():
     return flask.redirect(flask.url_for('play', game_id=game.pk))
 
 @app.route('/play/<game_id>', methods=['GET', 'POST'])
+# sets a new game of hangman with a specific id
 def play(game_id):
     game = Game.query.get_or_404(game_id)
 
@@ -133,5 +135,5 @@ def play(game_id):
 # Main
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', debug=True)
+    app.run(host='0.0.0.0', debug=True) # runs on the 0.0.0.0 ip address (local host)
 
