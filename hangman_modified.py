@@ -1,6 +1,6 @@
 import random
 
-import flask #flask framework, allows python program to be used in web development
+import flask # flask framework, allows python program to be used in web development
 
 from flask_sqlalchemy import SQLAlchemy
 
@@ -23,7 +23,7 @@ def random_word():
     Return a randomly chosen word (capitalized) from the sequence.
     '''
     words = [line.strip() for line in open('words2.txt') if len(line) > 10]
-    return random.choice(words).upper() #Returns a randomly chosen word from a the list (words) in all caps
+    return random.choice(words).upper() # Returns a randomly chosen word from the list (words) in all caps
 
 class Game(db.Model):
     ''' (TODO: Class description)
@@ -34,7 +34,7 @@ class Game(db.Model):
     # pk (int) = primary key, used to identify record
     # word (str) = the answer word
     # tried (str) = all characters entered, include both correct/incorrect ones
-    # player (str) = player name
+    # player (str) = player name,
     pk = db.Column(db.Integer, primary_key=True, default=random_pk)
     word = db.Column(db.String(50), default=random_word)
     tried = db.Column(db.String(50), default='')
