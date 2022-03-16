@@ -6,4 +6,4 @@
 
 # Modification
 
-- The game only words when >10 words are given in the source file
+- The game only works when >10 words are given in the source file
