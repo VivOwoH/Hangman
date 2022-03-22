@@ -17,4 +17,4 @@
 
 
 # Consider to be Modified
-- The game only words when >10 words are given in the source file
+- The game only accept words with more than 10 characters
