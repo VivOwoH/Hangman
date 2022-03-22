@@ -19,10 +19,10 @@ def random_pk():
 
 def random_word():
     '''
-    Read the file and store the words ONLY IF the file has more than 10 words.
+    Read the file and store the words ONLY IF the word has more than 10 characters.
     Return a randomly chosen word (capitalized) from the sequence.
     '''
-    words = [line.strip() for line in open('words2.txt') if len(line) > 10]
+    words = [line.strip() for line in open('words.txt') if len(line) > 10]
     return random.choice(words).upper() # Returns a randomly chosen word from the list (words) in all caps
 
 class Game(db.Model):
