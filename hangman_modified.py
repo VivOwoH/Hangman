@@ -79,6 +79,13 @@ class Game(db.Model):
             self.tried += letter
             db.session.commit()
 
+    def hint(self, length):
+        if length <= 15:
+            amount_hint = 3
+        elif length > 15:
+            amount_hint = 4
+
+
     # Game status
 
     @property
@@ -109,8 +116,8 @@ def home(): # home screen
 @app.route('/play')
 # play button on home screen
 def new_game():
-    player = flask.request.args.get('player')
-    game = Game(player)
+    player = flask.request.args.get('player') # getting player's name from the flash (html webserver)
+    game = Game(player) # setting game as a list based on the player's name
     db.session.add(game)
     db.session.commit()
     return flask.redirect(flask.url_for('play', game_id=game.pk))
