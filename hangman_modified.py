@@ -1,14 +1,14 @@
-import random
-
-import flask # flask framework, allows python program to be used in web development
-
+import random # importing random module; allows production of a random number
+# flask framework, allows python program to be used in web development
+import flask
+# importing a database module, allowign for records of each hangman game to be stored in the back-end
 from flask_sqlalchemy import SQLAlchemy
 
-app = flask.Flask(__name__) #importing name of place hangman packagae
+app = flask.Flask(__name__) # importing name of place hangman package
 
 # Database
-
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///hangman.db' # setting back-end database for the hangman using back end module SQLAlchemy
+# setting back-end database for the hangman using back end module SQLAlchemy
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///hangman.db'
 db = SQLAlchemy(app)
 
 # Model Record
@@ -36,9 +36,12 @@ class Game(db.Model): # sets new game record in database based on the Game's inf
     # tried (str) = all characters entered, include both correct/incorrect ones
     # player (str) = player name,
     # sets each record in the database with 4 different column
-    pk = db.Column(db.Integer, primary_key=True, default=random_pk) # First column of the record is the primary key (integer)
-    word = db.Column(db.String(50), default=random_word) # Second column of record is the game's session randomly picked word (string)
-    tried = db.Column(db.String(50), default='') # Third column of record contains all the letters entered during the game, both correct and incorrect (string)
+    pk = db.Column(db.Integer, primary_key=True, default=random_pk)
+    # First column of the record is the primary key (integer), default assigns the value = random_pk
+    word = db.Column(db.String(50), default=random_word)
+    # Second column of record is the game's session randomly picked word (string), default assigns the record value with random word
+    tried = db.Column(db.String(50), default='')
+    # Third column of record contains all the letters entered during the game, both correct and incorrect (string)
     player = db.Column(db.String(50)) # Forth column of record contains player's name entered
 
     # constructor
@@ -48,12 +51,12 @@ class Game(db.Model): # sets new game record in database based on the Game's inf
 
     #property decorator: defines properties by appending function to the in-built function property
     @property # adds property decorator to functions
-    # calls property function with errors function e.g property(errors)
+    # calls property function with errors function = property(errors)
     def errors(self):
         ''' Return the set of incorrect characters attempted as one string '''
         return ''.join(set(self.tried) - set(self.word))
 
-    @property # calls property functions with current function eg. property(current)
+    @property # calls property functions with current function = property(current)
     def current(self):
         ''' Return the set of correct characters attempted as one string, unknown characters denoted by underscore_ '''
         return ''.join([c if c in self.tried else '_' for c in self.word])
@@ -111,14 +114,14 @@ class Game(db.Model): # sets new game record in database based on the Game's inf
 
 # Controller
 
-@app.route('/')
+@app.route('/')  #assigns URL to function that will
 def home(): # home screen
     games = sorted(
         [game for game in Game.query.all() if game.won],
         key=lambda game: -game.points)[:10]
     return flask.render_template('home.html', games=games)
 
-@app.route('/play') #assigns html url to function
+@app.route('/play') #assigns the play.html url to function that will process the logic for the function
 # play button on home screen
 def new_game():
     player = flask.request.args.get('player') # getting player's name from the flash (html webserver)
@@ -134,10 +137,8 @@ def play(game_id):  #actual game itself
 
     if flask.request.method == 'POST':
         letter = flask.request.form['letter'].upper() # Getting letter from the input HTML 'letter' name
-        if len(letter) == 1 and letter.isalpha():
+        if len(letter) == 1 and letter.isalpha(): #Check if the length of the input is 1 and if the
             game.try_letter(letter)
-
-    if flask.request.method == 'POST':
 
 
     if flask.request.is_xhr:
@@ -150,5 +151,5 @@ def play(game_id):  #actual game itself
 # Main
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', debug=True) # runs on the 0.0.0.0 ip address (local host)
+    app.run(host='0.0.0.0', debug=True) # runs on the 0.0.0.0 ip address (local host) also allows debugging tools to be accessed
 
