@@ -3,6 +3,9 @@
 - db.Column = define a columnl; 
 	- 1st arg = String name
 	- primary_key = True means set this data column as the primary key that is used to identify records
+- cache issue
+	- known problematic datatypes: JSON
+	- When checking changes in browser, use developer tool -> Network -> Disable cache, else the changes will not be updated
 
 # Ongoing Modification
 - Multiple languages
