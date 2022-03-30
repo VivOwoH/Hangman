@@ -14,21 +14,35 @@
           href="{{ url_for('static', filename='main.css') }}">
   </head>
   <body>
-    <div>
-      <a class="button" id="settings" href="/settings">Settings</a>
-    </div>
-
     <div class="container text-center">
-      <h1>Hangman game</h1>
+      <nav class="navbar">
+        <div class="container">
+          <ul class="navbar-list navbar-left">
+            <!-- Nav links -->
+          </ul>
+          <div class="navbar-right">
+            <!-- ... -->
+            <select data-i18n-switcher class="locale-switcher">
+              <option value="en">English</option>
+              <option value="fr">French (française)</option>
+            </select>
+          </div>
+        </div>
+      </nav>
+
+      <h1 data-i18n-key="app-title">Hangman game</h1>
+
       <div class="row vspace">
         <div class="col-md-6 col-md-offset-3"> <!-- displays unknown word -->
           {% block content %}{% endblock %}
         </div>
       </div>
+      
     </div>
 
     <script src="{{ url_for('static', filename='jquery.min.js') }}"></script>
     <script src="{{ url_for('static', filename='bootstrap.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='i18n.js') }}"></script>
 
     {% block bottom %}{% endblock %}
   </body>

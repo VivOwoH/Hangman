@@ -1,7 +1,9 @@
 import random # importing random module; allows production of a random number
 # flask framework, allows python program to be used in web development
 import flask
-# importing a database module, allowign for records of each hangman game to be stored in the back-end
+
+# importing a database module, allowing for records of each hangman game 
+# to be stored in the back-end
 from flask_sqlalchemy import SQLAlchemy
 
 app = flask.Flask(__name__) # importing name of place hangman package
@@ -14,42 +16,61 @@ db = SQLAlchemy(app)
 # Model Record
 
 def random_pk():
-    ''' Return a random integer from 10^9 to 10^10 inclusive as primary key '''
-    return random.randint(1e9, 1e10) #primary key for record in the database
+    ''' Return a random integer from 10^9 to 10^10 inclusive as primary key 
+    for record in the database '''
+    return random.randint(1e9, 1e10)
 
 def random_word():
     '''
     Read the file and store the words ONLY IF the word has more than 10 characters.
-    Return a randomly chosen word (capitalized) from the sequence.
+    Return a randomly chosen word from the list in all caps.
     '''
     words = [line.strip() for line in open('words.txt') if len(line) > 10]
-    return random.choice(words).upper() # Returns a randomly chosen word from the list (words) in all caps
+    return random.choice(words).upper()
 
-class Game(db.Model): # sets new game record in database based on the Game's information (player name, word, characters entered), modelling the database
-    ''' (TODO: Class description)
-    Args:
-    :param player (str): name of the player
-    '''
+class Game(db.Model):
+    ''' blueprint of game records/sessions
     
-    # pk (int) = primary key, used to identify record
-    # word (str) = the answer word
-    # tried (str) = all characters entered, include both correct/incorrect ones
-    # player (str) = player name,
-    # sets each record in the database with 4 different column
+    Parameter:
+    ; db.Model: baseclass for all models, stored on SQLAlchemy instance
+
+    Attributes:
+    ; pk (int) = primary key, used to identify record
+    ; word (str) = the answer word
+    ; tried (str) = all characters entered, include both correct/incorrect ones
+    ; player (str) = player name
+    '''
+    #----------- Class Attributes --------------
+
+    # Each Game record in the database will have 4 columns
     pk = db.Column(db.Integer, primary_key=True, default=random_pk)
-    # First column of the record is the primary key (integer), default assigns the value = random_pk
+    # Column 1 is the primary key (integer), default assigns the value = random_pk
+
     word = db.Column(db.String(50), default=random_word)
-    # Second column of record is the game's session randomly picked word (string), default assigns the record value with random word
+    # Column 2 is the game's session randomly picked word (string), 
+    # default assigns the record value with random word
+    
     tried = db.Column(db.String(50), default='')
-    # Third column of record contains all the letters entered during the game, both correct and incorrect (string)
-    player = db.Column(db.String(50)) # Forth column of record contains player's name entered
+    # Column 3 contains all the letters entered during the game, 
+    # both correct and incorrect (string)
+    
+    player = db.Column(db.String(50)) 
+    # Column 4 contains player's name entered
 
-    # constructor
-    def __init__(self, player): #intilizer method, called automatically whenever an instance is created
+
+    #----------- Class constructor --------------
+
+    # intilizer method, called automatically whenever an instance is created
+    def __init__(self, player): 
         # self: refers to the particular instance
-        self.player = player # assigned self player instance with the player name
+        self.player = player # assigned the given parameter to the instance attribute
 
-    #property decorator: defines properties by appending function to the in-built function property
+    
+    #----------- Properties/Methods --------------
+
+    # property decorator(@property): defines properties by appending function 
+    # to the in-built function property
+
     @property # adds property decorator to functions
     # calls property function with errors function = property(errors)
     def errors(self):
@@ -58,13 +79,13 @@ class Game(db.Model): # sets new game record in database based on the Game's inf
 
     @property # calls property functions with current function = property(current)
     def current(self):
-        ''' Return the set of correct characters attempted as one string, unknown characters denoted by underscore_ '''
+        ''' Return the set of correct characters attempted as one string, 
+        unknown characters denoted by underscore_ '''
         return ''.join([c if c in self.tried else '_' for c in self.word])
 
     @property
     def points(self):
-        ''' Return score 
-        score = B + U + L - E
+        ''' Return score = B + U + L - E
 
         :B (Base score) = 100
         :U (Unique character in the word) = 2 per character
@@ -76,7 +97,8 @@ class Game(db.Model): # sets new game record in database based on the Game's inf
     # Play
 
     def try_letter(self, letter):
-        ''' Return none, try to concatenate the letter to the string of already tried letters
+        ''' Return none, try to concatenate the letter 
+        to the string of already tried letters
         
         Condition: 
         Letter concatenated if ongoing game && character does not exist in tried letters
@@ -87,6 +109,7 @@ class Game(db.Model): # sets new game record in database based on the Game's inf
             db.session.commit()
 
     def hint(self, length):
+        ''' TODO: add function description, specify return type '''
         if length <= 15:
             amount_hint = 3
         elif length > 15:
@@ -98,7 +121,8 @@ class Game(db.Model): # sets new game record in database based on the Game's inf
 
     @property
     def won(self):
-        ''' Return True if all characters in the word have been guessed, False otherwise '''
+        ''' Return True if all characters in the word 
+        have been guessed, False otherwise '''
         return self.current == self.word
 
     @property
@@ -114,15 +138,17 @@ class Game(db.Model): # sets new game record in database based on the Game's inf
 
 # Controller
 
-@app.route('/')  #assigns URL to function that will
-def home(): # home screen
+@app.route('/')  #assigns URL to function
+def home(): 
+    ''' home page '''
     games = sorted(
         [game for game in Game.query.all() if game.won],
         key=lambda game: -game.points)[:10]
     return flask.render_template('home.html', games=games)
 
-@app.route('/play') #assigns the play.html url to function that will process the logic for the function
-# play button on home screen
+# assigns the play.html url to function 
+# that will route to the webpage when function is called
+@app.route('/play')
 def new_game():
     player = flask.request.args.get('player') # getting player's name from the flash (html webserver)
     game = Game(player) # setting game as a list based on the player's name

@@ -1,0 +1,7 @@
+{
+    "app-title": "Hangman Game",
+    "player": "Player!",
+    "word": "Word",
+    "error": "Errors",
+    "point": "Points"
+}
