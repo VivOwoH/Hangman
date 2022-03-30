@@ -7,8 +7,12 @@
 	- known problematic datatypes: JSON
 	- When checking changes in browser, use developer tool -> Network -> Disable cache, else the changes will not be updated
 
-# Ongoing Modification
+# Confirmed implemented modification
 - Multiple languages
+	- skeleton code done
+	- languages (English, French, Italian, Spanish and German)
+
+# Ongoing Modification
 - Clue feature
 - Option to select difficulty
 - Fully-fledged + better looking UI
