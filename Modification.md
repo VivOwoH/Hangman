@@ -11,17 +11,16 @@
 - Multiple languages
 	- skeleton code done
 	- languages (English, French, Italian, Spanish and German)
+- UI change
+	- color theme
+	- background img
+
+# Modification from testing
+- Username limit to <=10 characters
 
 # Ongoing Modification
 - Clue feature
 - Option to select difficulty
-- Fully-fledged + better looking UI
-	- Main Menu
-	- Pause Overlay
-		- restart
-		- return to menu
-	- Levels? (unsure as can potentially change main game mechanism like scoring)
-
 
 # Consider to be Modified
 - The game only accept words with more than 10 characters
