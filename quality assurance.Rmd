@@ -44,5 +44,6 @@ Edge cases (input normal users won't think of putting in) e.g. empty input:
 TEST CASE FOR MODIFIED PROGRAM: 
 [Please list all the test cases you have done, including those where no bugs were detected. ]
 
-
+POSITIVE TEST CASES (valid inputs):
+fixed:Username is now limited to 10 characters, compared to being infinite in the original Hangman game. 
 
