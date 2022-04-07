@@ -1,0 +1,48 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+```{r}
+
+```
+
+
+ TEST CASE FOR ORIGINAL PROGRAM:  
+[Please list all the test cases you have done, including those where no bugs were detected.[]
+
+Blackbox test case:
+POSITIVE TEST CASES (valid inputs):
+
+1. WEBSITE WORKS!
+	 
+2. Alphabet: all letters:
+	- A B C D E F : pass
+	- H I J K L M N: pass
+	- O P Q R S T U V: pass
+	- W X Y Z: pass
+3. Automatic capital letter inputs: inputs as both capital and small letters work since the input is formatted to change every case to UPPER CASE when putting the letters in. 
+4. Backspace works. 
+5. To see if the hangman guy works:
+    ○ Works: A B C D E  F G H I J K L M N O P Q R S  T U V W X Y Z
+7. Refresh works. 
+8. The records get saved i.e. levels. 
+	
+NEGATIVE TEST CASES (invalid inputs): *generally checking inputs of wrong type, case-sensitive inputs, alphabetical/numerical inputs, too few/many inputs etc: 
+ 
+1. Input of Repeated Same letters in one input: The letter doesn’t repeat upon the second time. (e.g. you put in A A: output will let the user put in A *instead of A A).   [ X ] 
+2. Input of Repeated Different letters in one input: The letter doesn’t repeat upon the second time. (e.g. you put in A Q: output will only let the user put in A *instead of AQ. In conclusion, the input is only meant for one character input from the user. 
+3.Numbers- numbers do not work. [ X ] 
+4. Symbols/ keyboard symbols ( : , ' , {}  etc.) do not work.  [ X ]
+5. Previous page (<-) on website: makes you go back to the previous level: previous words you have encountered. *URL: Memory address changes.  [ X ] 
+6. BUG TO FIX: Username can be infinite: therefore, goes beyond the screen and drags the bottom top player usernames along with it (to the sides). [ X ]
+
+Edge cases (input normal users won't think of putting in) e.g. empty input: 
+
+1. BUG TO FIX: How to delete player record? 
+
+TEST CASE FOR MODIFIED PROGRAM: 
+[Please list all the test cases you have done, including those where no bugs were detected. ]
+
+
+
