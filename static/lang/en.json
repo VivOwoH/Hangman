@@ -3,5 +3,10 @@
     "player": "Player!",
     "word": "Word",
     "error": "Errors",
-    "point": "Points"
+    "point": "Points",
+    "play": "Play!",
+    "top": "Top 10",
+    "placeholder": "Your name",
+    "try":"Try letter",
+    "hint":"Hint?"
 }

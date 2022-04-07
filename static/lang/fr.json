@@ -3,5 +3,10 @@
     "player": "Joueur!",
     "word": "Mot",
     "error": "Erreurs",
-    "point": "Points"
+    "point": "Points",
+    "play": "Pouer!",
+    "top": "Top 10",
+    "placeholder": "Votre nom",
+    "try":"Lettre d'essai",
+    "hint":"Indice?"
 }

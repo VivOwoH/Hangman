@@ -1,7 +1,7 @@
 import random # importing random module; allows production of a random number
 # flask framework, allows python program to be used in web development
 import flask
-
+import json
 # importing a database module, allowing for records of each hangman game 
 # to be stored in the back-end
 from flask_sqlalchemy import SQLAlchemy
@@ -25,7 +25,7 @@ def random_word():
     Read the file and store the words ONLY IF the word has more than 10 characters.
     Return a randomly chosen word from the list in all caps.
     '''
-    words = [line.strip() for line in open('words.txt') if len(line) > 10]
+    words = [line.strip() for line in open('words_fr.txt') if len(line) > 10]
     return random.choice(words).upper()
 
 class Game(db.Model):

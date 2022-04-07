@@ -42,7 +42,7 @@
     <h1 id="current" class="spaced">{{ game.current }}</h1>
   {% endif %}
 
-  <h2 class="vspace" id="errors">
+  <h2 class="vspace" id="errors" data-i18n-key="error">
     Errors ({{ game.errors|length }}/6):
     <span class="text-danger spaced">{{ game.errors }}</span>
   </h2>
@@ -53,8 +53,8 @@
         <input class="input-lg text-uppercase" maxlength="1" size="1"
                name="letter" autocomplete="off" autofocus> <!-- input box -->
       </div>
-      <button type="submit" class="btn btn-default btn-lg">Try letter</button>
-      <button type="submit" class="btn btn-defaultle btn-lg">Hint?</button> <!-- hint button -->
+      <button type="submit" class="btn btn-default btn-lg" data-i18n-key="try">Try letter</button>
+      <button type="submit" class="btn btn-defaultle btn-lg" data-i18n-key="hint">Hint?</button> <!-- hint button -->
     </form>
   {% endif %}
 {% endblock %}

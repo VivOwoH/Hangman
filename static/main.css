@@ -1,3 +1,6 @@
+h1 {
+  color:white;
+}
 
 th {
   text-align: center
@@ -15,7 +18,7 @@ th {
 
 #drawing {
   fill: none;
-  stroke: black;
+  stroke: white;
   stroke-width: 3;
   stroke-linecap: round;
 }

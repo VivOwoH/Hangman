@@ -1,6 +1,6 @@
 // Mohammad. (Last updated on February 16th, 2022) [Source code] https://phrase.com/blog/posts/step-step-guide-javascript-localization/
 
-// The locale our app first shows
+// The locale our app default will show
 const defaultLocale = "en";
 
 // The active locale
@@ -17,8 +17,8 @@ document.addEventListener("DOMContentLoaded", () => {
   bindLocaleSwitcher(defaultLocale);
 });
 
-// Load translations for the given locale and translate
-// the page to this locale
+// Load translations for the given locale and 
+// translate the page to this locale
 async function setLocale(newLocale) {
   if (newLocale === locale) return;
   const newTranslations = 
@@ -28,8 +28,7 @@ async function setLocale(newLocale) {
   translatePage();
 }
 
-// Retrieve translations JSON object for the given
-// locale over the network
+// Retrieve translations JSON object for the given locale over the network
 async function fetchTranslationsFor(newLocale) {
   const response = await fetch(`/static/lang/${newLocale}.json`);
   return await response.json();
@@ -37,7 +36,7 @@ async function fetchTranslationsFor(newLocale) {
 
 // Replace the inner text of each element that has a
 // data-i18n-key attribute with the translation corresponding
-// to its data-i18n-key
+// to its data-i18n-key 
 function translatePage() {
   document
     .querySelectorAll("[data-i18n-key]")
@@ -46,16 +45,16 @@ function translatePage() {
 
 // Replace the inner text of the given HTML element
 // with the translation in the active locale,
-// corresponding to the element's data-i18n-key
+// corresponding to the element's data-i18n-key 
+// (All translations stored in JSON files)
 function translateElement(element) {
   const key = element.getAttribute("data-i18n-key");
   const translation = translations[key];
   element.innerText = translation;
 }
 
-// Whenever the user selects a new locale, we
-// load the locale's translations and update
-// the page
+// Whenever the user selects a new locale, 
+// we load the locale's translations and update the page
 function bindLocaleSwitcher(initialValue) {
 	const switcher = 
 	  document.querySelector("[data-i18n-switcher]");
