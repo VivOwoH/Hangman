@@ -57,10 +57,13 @@ class Game(db.Model):
     player = db.Column(db.String(50)) 
     # Column 4 contains player's name entered
 
+    language = db.Column(db.String(50), default='en')
+    # Column 5 conatins each game session's language setting
+
 
     #----------- Class constructor --------------
 
-    # intilizer method, called automatically whenever an instance is created
+    # initializer method(constructor), called automatically whenever an instance is created
     def __init__(self, player): 
         # self: refers to the particular instance
         self.player = player # assigned the given parameter to the instance attribute
@@ -150,32 +153,41 @@ def home():
 # that will route to the webpage when function is called
 @app.route('/play')
 def new_game():
-    player = flask.request.args.get('player') # getting player's name from the flash (html webserver)
+    ''' Generating a new game session, and registered into database '''
+    player = flask.request.args.get('player') # getting a MultiDict (dictionary object) from the flash (html webserver) 
+                                                # with the key being player's name
     game = Game(player) # setting game as a list based on the player's name
     db.session.add(game) # adding current game session based on the player's name to the database
     db.session.commit() # committing the game to the database
-    return flask.redirect(flask.url_for('play', game_id=game.pk)) # redirecting the user to a new html page (play.html) to play Hangman after game has registered into database
+    return flask.redirect(flask.url_for('play', game_id=game.pk)) # redirecting the user to a new html page (play.html) 
+                                                                # to play after game has registered into database
 
+# route to play page, url contains unique game session id being the primary key assigned when instantiated
 @app.route('/play/<game_id>', methods=['GET', 'POST'])
-# sets a new game of hangman with a specific id
-def play(game_id):  #actual game itself
-    game = Game.query.get_or_404(game_id) #defining game based on game id from
+def play(game_id): 
+    ''' Main game function '''
+    
+    game = Game.query.get_or_404(game_id) # get the game session with game id that is the primary key assigned
 
-    if flask.request.method == 'POST':
-        letter = flask.request.form['letter'].upper() # Getting letter from the input HTML 'letter' name
-        if len(letter) == 1 and letter.isalpha(): #Check if the length of the input is 1 and if the
+    # POST is an HTTP request method used to send data from a client to web server to create/update a resource
+    if flask.request.method == 'POST': # if we are sending data to the server
+        letter = flask.request.form['letter'].upper() # Getting letter from the input HTML 'letter' name, capitalized
+        if len(letter) == 1 and letter.isalpha(): # Check if one alphabetical character is inputed, 
+                                                    # call try_letter method if true
             game.try_letter(letter)
 
-
-    if flask.request.is_xhr:
+    # XMLHttpRequest(XHR) request object is used to request data from a web server without the need to reload the page
+    # *Note: request.is_xhr method has been deprecated since Flask 0.13 and removed in Werkzeug 1.0.0 
+    if flask.request.is_xhr: # if we are requesting data from server
         return flask.jsonify(current=game.current,
                              errors=game.errors,
-                             finished=game.finished)
-    else:
-        return flask.render_template('play.html', game=game)
+                             finished=game.finished) # convert python objects/attributes into json objects
+    else: # not requesting data
+        return flask.render_template('play.html', game=game) # render html template (based on Jinja2 engine)
+
 
 # Main
-
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', debug=True) # runs on the 0.0.0.0 ip address (local host) also allows debugging tools to be accessed
+    app.run(host='0.0.0.0', debug=True) # runs on the 0.0.0.0 ip address (local host),
+                                        # also allows debugging tools to be accessed
 
