@@ -1,0 +1,12 @@
+{
+    "app-title": "Hangman Game",
+    "player": "Player!",
+    "word": "Word",
+    "error": "Errors",
+    "point": "Points",
+    "play": "Play!",
+    "top": "Top 10",
+    "placeholder": "Your name",
+    "try":"Try letter",
+    "hint":"Hint?"
+}
