@@ -8,5 +8,9 @@
     "top": "Top 10",
     "placeholder": "Votre nom",
     "try":"Lettre d'essai",
-    "hint":"Indice?"
+    "hint":"Indice?",
+    "confirm": "Confirmer",
+    "home": "Page d'accueil",
+    "again": "Rejouer",
+    "language": "Langue"
 }

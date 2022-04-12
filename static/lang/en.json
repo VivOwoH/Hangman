@@ -8,5 +8,9 @@
     "top": "Top 10",
     "placeholder": "Your name",
     "try":"Try letter",
-    "hint":"Hint?"
+    "hint":"Hint?",
+    "confirm": "Confirm",
+    "home": "Home",
+    "again": "Play again",
+    "language": "Language"
 }

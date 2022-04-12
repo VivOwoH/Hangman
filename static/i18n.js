@@ -1,13 +1,13 @@
 // Mohammad. (Last updated on February 16th, 2022) [Source code] https://phrase.com/blog/posts/step-step-guide-javascript-localization/
 
 // The locale our app default will show
-const defaultLocale = "en";
+defaultLocale = "en";
 
 // The active locale
-let locale;
+locale = '';
 
 // Gets filled with active locale translations
-let translations = {};
+translations = {};
 
 // When the page content is ready...
 document.addEventListener("DOMContentLoaded", () => {
@@ -17,15 +17,22 @@ document.addEventListener("DOMContentLoaded", () => {
   bindLocaleSwitcher(defaultLocale);
 });
 
+function update(value) {
+  // add a timeout delay to increase stability for frequent refreshing
+  setTimeout(function(){
+    setLocale(value)
+  },100)
+}
+
 // Load translations for the given locale and 
 // translate the page to this locale
 async function setLocale(newLocale) {
-  if (newLocale === locale) return;
-  const newTranslations = 
-    await fetchTranslationsFor(newLocale);
-  locale = newLocale;
-  translations = newTranslations;
-  translatePage();
+    if (newLocale === locale) return;
+    const newTranslations = 
+      await fetchTranslationsFor(newLocale);
+    locale = newLocale;
+    translations = newTranslations;
+    translatePage();
 }
 
 // Retrieve translations JSON object for the given locale over the network
@@ -58,11 +65,11 @@ function translateElement(element) {
 function bindLocaleSwitcher(initialValue) {
 	const switcher = 
 	  document.querySelector("[data-i18n-switcher]");
-
+  if (switcher == null) return;
 	switcher.value = initialValue;
 
 	switcher.onchange = (e) => {
 	  // Set the locale to the selected option[value]
 	  setLocale(e.target.value);
 	};
-  }
+}

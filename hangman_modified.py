@@ -25,7 +25,25 @@ def random_word():
     Read the file and store the words ONLY IF the word has more than 10 characters.
     Return a randomly chosen word from the list in all caps.
     '''
-    words = [line.strip() for line in open('words_fr.txt') if len(line) > 10]
+    words = [line.strip() for line in open('words.txt') if len(line) > 10]
+    return random.choice(words).upper()
+
+def random_word(locale):
+    '''
+    Overload method, used when localization is provided as parameter
+    Locale available: English, French, Italian, Spanish and German
+    '''
+    filename = "words.txt" # default
+    if locale == "fr":
+        filename = "words_fr.txt"
+    elif locale == "it":
+        filename = "words_it.txt"
+    elif locale == "es":
+        filename = "words_es.txt"
+    elif locale == "de":
+        filename = "words_de.txt"
+
+    words = [line.strip() for line in open(filename) if len(line) > 10]
     return random.choice(words).upper()
 
 class Game(db.Model):
@@ -39,6 +57,7 @@ class Game(db.Model):
     ; word (str) = the answer word
     ; tried (str) = all characters entered, include both correct/incorrect ones
     ; player (str) = player name
+    ; language(str) = language localization
     '''
     #----------- Class Attributes --------------
 
@@ -57,7 +76,7 @@ class Game(db.Model):
     player = db.Column(db.String(50)) 
     # Column 4 contains player's name entered
 
-    # language = db.Column(db.String(50), default='en')
+    language = db.Column(db.String(50), default='en')
     # Column 5 conatins each game session's language setting
 
 
@@ -67,7 +86,7 @@ class Game(db.Model):
     def __init__(self, player): 
         # self: refers to the particular instance
         self.player = player # assigned the given parameter to the instance attribute
-
+        self.word = random_word(self.language)
     
     #----------- Properties/Methods --------------
 
@@ -96,6 +115,11 @@ class Game(db.Model):
         :E (Wrong characters attempted) = -10 points per incorrect character
         '''
         return 100 + 2*len(set(self.word)) + len(self.word) - 10*len(self.errors)
+
+    @property
+    def locale(self):
+        ''' Return localization language chosen for the game session '''
+        return self.language
 
     # Play
 
@@ -141,12 +165,15 @@ class Game(db.Model):
 
 # Controller
 
-@app.route('/')  #assigns URL to function
+@app.route('/', methods=['GET', 'POST'])  #assigns URL to function
 def home(): 
     ''' home page
     Only games that are won are shown in the home page
     Only Top 10 games are shown
     '''
+    value = flask.request.form.get('language')
+    Game.language = value 
+
     games = sorted(
         [game for game in Game.query.all() if game.won],
         key=lambda game: -game.points)[:10] 
@@ -163,6 +190,8 @@ def new_game():
     player = flask.request.args.get('player') # getting a MultiDict (dictionary object) 
                                     # from the flash (html webserver) with the key being player's name
     game = Game(player) # setting game as a list based on the player's name
+    game.language = Game.language
+
     db.session.add(game) # adding current game session based on the player's name to the database
     db.session.commit() # committing the game to the database
     return flask.redirect(flask.url_for('play', game_id=game.pk)) # redirecting the user to a new html page (play.html) 
@@ -172,8 +201,10 @@ def new_game():
 @app.route('/play/<game_id>', methods=['GET', 'POST'])
 def play(game_id): 
     ''' Main game function '''
-
     game = Game.query.get_or_404(game_id) # get the game session with game id that is the primary key assigned
+    
+    # debug | checking language locale of this game session
+    print("locale of this game session: " + game.locale)
 
     # POST is an HTTP request method used to send data from a client to web server to create/update a resource
     if flask.request.method == 'POST': # if we are sending data to the server
