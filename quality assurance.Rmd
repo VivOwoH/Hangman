@@ -11,7 +11,7 @@ output: html_notebook
  TEST CASE FOR ORIGINAL PROGRAM:  
 [Please list all the test cases you have done, including those where no bugs were detected.[]
 
-Whitebox test case:
+Blackbox test case:
 POSITIVE TEST CASES (valid inputs):
 
 1. WEBSITE WORKS!
