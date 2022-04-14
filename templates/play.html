@@ -22,7 +22,7 @@
   {% if game.finished %}
     <h1>
       {% for letter in game.word %}
-        <span class="
+        <span style="font-family:Fredericka the Great,Helvetica" class="
           text-{% if letter in game.tried %}success{% else %}danger{% endif %}">
           {{ letter }}
         </span>
@@ -41,11 +41,17 @@
       </a>
     </p>
   {% else %}
-    <h1 id="current" class="spaced">{{ game.current }}</h1>
+    <h1 style="font-family:Fredericka the Great,Helvetica"
+        id="current" class="spaced">{{ game.current }}</h1>
   {% endif %}
-
-  <h2 style="font-family:Fredericka the Great,Helvetica; color: #fff;" class="vspace" id="errors" data-i18n-key="error">
-    Errors ({{ game.errors|length }}/6):
+  
+  <h2 style="font-family:Fredericka the Great,Helvetica; 
+      color: #fff; display: inline-block"
+          data-i18n-key="error">Errors</h2>
+  <h2 style="font-family:Fredericka the Great,Helvetica; 
+      color: #fff; display: inline-block" 
+      class="vspace" id="errors" >
+     ({{ game.errors|length }}/6):
     <span class="text-danger spaced">{{ game.errors }}</span>
   </h2>
 
@@ -66,7 +72,10 @@
   <script>
     // update eventlistener
     document.removeEventListener('DOMContentLoaded', {setLocale, bindLocaleSwitcher})
-    document.addEventListener('DOMContentLoaded', function () {update('{{ game.language }}')});
+    document.addEventListener('DOMContentLoaded', function () 
+        {update('{{ game.language }}')});
+    document.removeEventListener('DOMContentLoaded', function () 
+        {update('{{ game.language }}')});
   </script>
 
   <script src="{{ url_for('static', filename='main.js') }}"></script>
