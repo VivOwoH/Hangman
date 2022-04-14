@@ -22,7 +22,7 @@ $('#letter-form').submit(function(e) {
         
         /* Update errors */
         $('#errors').html(
-          'Errors (' + data.errors.length + '/6): ' +
+          ' (' + data.errors.length + '/6): ' +
           '<span class="text-danger spaced">' + data.errors + '</span>');
           
         /* Update drawing */
