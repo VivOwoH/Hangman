@@ -45,5 +45,7 @@ TEST CASE FOR MODIFIED PROGRAM:
 [Please list all the test cases you have done, including those where no bugs were detected. ]
 
 POSITIVE TEST CASES (valid inputs):
-fixed:Username is now limited to 10 characters, compared to being infinite (6:negative) in the original Hangman game. 
+1. BUG FIXED:Username is now limited to 10 characters, compared to being infinite (6:negative) in the original Hangman game: works. 
+2. 
+
 
