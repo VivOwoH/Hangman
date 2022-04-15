@@ -1,0 +1,16 @@
+{
+    "app-title": "Juego Del Ahorcado",
+    "player": "Jugador!",
+    "word": "Palabra",
+    "error": "Errores",
+    "point": "Puntos",
+    "play": "Jugar!",
+    "top": "Los 10 mejores",
+    "placeholder": "Su nombre",
+    "try":"Prueba la carta",
+    "hint":"¿Insinuación?",
+    "confirm": "Confirmar",
+    "home": "Página de inicio",
+    "again": "Juega de nuevo",
+    "language": "Idioma"
+}
