@@ -53,6 +53,11 @@
       class="vspace" id="errors" > ({{ game.errors|length }}/6):
     <span class="text-danger spaced">{{ game.errors }}</span>
   </h2>
+  <br>
+  <h2 style="font-family:Fredericka the Great,Helvetica;
+    color: #fff; display: inline-block" id="hints">
+    <span>Hint Counter: {{ hint_max }}</span>
+  </h2>
 
   {% if not game.finished %}
     <form method="post" id="letter-form" class="form-inline vspace">
@@ -60,8 +65,10 @@
         <input class="input-lg text-uppercase" maxlength="1" size="1"
                name="letter" autocomplete="off" autofocus> <!-- input box -->
       </div>
-      <button type="submit" class="btn btn-default btn-lg" data-i18n-key="try">Try letter</button>
-      <button type="submit" class="btn btn-defaultle btn-lg" data-i18n-key="hint">Hint?</button> <!-- hint button -->
+      <button type="submit" class="btn btn-default btn-lg" data-i18n-key="try" name="letter" value="letter_value">Try letter</button>
+    </form>
+    <form method="post" id="hint-form">
+      <button type="submit" class="btn btn-default btn-lg" data-i18n-key="try" name="hint" value="hint_value">Hint?</button> <!-- hint button -->
     </form>
   {% endif %}
 {% endblock %}

@@ -5,6 +5,7 @@ import json
 # importing a database module, allowing for records of each hangman game 
 # to be stored in the back-end
 from flask_sqlalchemy import SQLAlchemy
+import os, sys
 
 app = flask.Flask(__name__) # importing name of place hangman package
 
@@ -12,6 +13,8 @@ app = flask.Flask(__name__) # importing name of place hangman package
 # setting back-end database for the hangman using back end module SQLAlchemy
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///hangman.db'
 db = SQLAlchemy(app)
+
+hint_max = 3
 
 # Model Record
 
@@ -105,6 +108,15 @@ class Game(db.Model):
         unknown characters denoted by underscore_ '''
         return ''.join([c if c in self.tried else '_' for c in self.word])
 
+    def hint(self):
+        word = self.word
+        word = list(word)
+        letters = []
+        for char in word:
+            if char not in letters and char not in self.tried:
+                letters.append(char)
+        self.try_letter(letters[0])
+
     @property
     def points(self):
         ''' Return score = B + U + L - E
@@ -135,12 +147,8 @@ class Game(db.Model):
             self.tried += letter
             db.session.commit()
 
-    def hint(self, length):
-        ''' TODO: add function description, specify return type '''
-        if length <= 15:
-            amount_hint = 3
-        elif length > 15:
-            amount_hint = 4
+    ''' TODO: add function description, specify return type '''
+
 
 
 
@@ -199,7 +207,12 @@ def new_game():
 
 # route to play page, url contains unique game session id being the primary key assigned when instantiated
 @app.route('/play/<game_id>', methods=['GET', 'POST'])
-def play(game_id): 
+def play(game_id):
+    global hint_max
+    # @app.route("/hint", methods=['GET', 'POST'])
+
+        # print(letters)
+
     ''' Main game function '''
     game = Game.query.get_or_404(game_id) # get the game session with game id that is the primary key assigned
     
@@ -207,25 +220,45 @@ def play(game_id):
     print("locale of this game session: " + game.locale)
 
     # POST is an HTTP request method used to send data from a client to web server to create/update a resource
-    if flask.request.method == 'POST': # if we are sending data to the server
-        letter = flask.request.form['letter'].upper() # Getting letter from the input HTML 'letter' name, capitalized
-        if len(letter) == 1 and letter.isalpha(): # Check if one alphabetical character is inputed, 
-                                                    # call try_letter method if true
-            game.try_letter(letter)
-
+    if flask.request.method == 'POST':  # if we are sending data to the server
+        print('posted')
+        print(flask.request.values)
+        print(flask.request.form)
+        if 'formName' in flask.request.values:
+            if flask.request.values['formName'] == 'letter-form':
+                letter = flask.request.values['letter'].upper()  # Getting letter from the input HTML 'letter' name, capitalized e.g. the input box on the html page
+                print(letter)
+                if len(letter) == 1 and letter.isalpha():  # Check if one alphabetical character is inputted,
+                    game.try_letter(letter)  # call game class with module try_letter, try_letter method if true
+            elif flask.request.values['formName'] == 'hint-form':
+                print('hi')
+                if hint_max > 0:
+                    game.hint()
+                    hint_max -= 1
     # XMLHttpRequest(XHR) request object is used to request data from a web server without the need to reload the page
-    # *Note: request.is_xhr method has been deprecated since Flask 0.13 and removed in Werkzeug 1.0.0 (unreliable) 
+    # *Note: request.is_xhr method has been deprecated since Flask 0.13 and removed in Werkzeug 1.0.0 (unreliable)
     if flask.request.is_xhr: # if we are requesting data from server
+        print(hint_max)
         return flask.jsonify(current=game.current,
                              errors=game.errors,
+                             hint_max=hint_max,
                              finished=game.finished) # convert python objects/attributes into json objects
     
     else: # not requesting or sending data
-        return flask.render_template('play.html', game=game) # render html template (based on Jinja2 engine)
+        hint_max = 3
+        return flask.render_template('play.html', game=game, hint_max=hint_max) # render html template (based on Jinja2 engine)
 
 
 # Main
+def base_path(path):
+    if getattr(sys, 'frozen', None):
+        basedir = sys._MEIPASS
+    else:
+        basedir = os.path.dirname(__file__)
+    return os.path.join(basedir, path)
+
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', debug=True) # runs on the 0.0.0.0 ip address (local host),
+    os.chdir(base_path(''))
+    app.run(debug=True) # runs on the 0.0.0.0 ip address (local host),
                                         # also allows debugging tools to be accessed
 
