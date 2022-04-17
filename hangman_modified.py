@@ -250,12 +250,12 @@ def play(game_id):
 
 # Main
 
-def base_path(path):
-    if getattr(sys, 'frozen', None):
-        basedir = sys._MEIPASS
+def base_path(path): # for packaging file, used by pyinstaller
+    if getattr(sys, 'frozen', None): # getting attribute of the system if system is frozen
+        basedir = sys._MEIPASS # storing the base directory in a temporary folder called MEIPASS
     else:
-        basedir = os.path.dirname(__file__)
-    return os.path.join(basedir, path)
+        basedir = os.path.dirname(__file__) # directory path of the file
+    return os.path.join(basedir, path)  # concatenates the 2 paths into 1
 
 if __name__ == '__main__':
     os.chdir(base_path(''))
